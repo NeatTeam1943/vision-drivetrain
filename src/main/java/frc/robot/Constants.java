@@ -25,11 +25,16 @@ public final class Constants {
         public static final int kRightFrontPort = 3;
         public static final int kRightRearPort = 4;
         public static final double kDriveSpeed = 0.11;
+
+        public static final double k100msTo60sRatio = 600;
+        public static final double kEncoderResolution = 2048;
+        public static final double kMotorToWheelRatio = 4;
+        public static final double kWheelCircumefrence = 47.879;
     }
 
-    public static class PIDConstants {
-        public static final double kp = 1 / 2;
-        public static final double ki = 0.0;
+    public static class PidConstants {
+        public static final double kp = 0.54187;
+        public static final double ki = 2.0;
         public static final double kd = 0.0;
     }
 }
