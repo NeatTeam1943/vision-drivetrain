@@ -9,7 +9,7 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.DriveToAT;
+import frc.robot.commands.DrivePid;
 import frc.robot.subsystems.DriveTrain;
 
 public class RobotContainer {
@@ -17,9 +17,9 @@ public class RobotContainer {
 
   private final PhotonCamera m_camera;
 
-  private final DriveToAT m_autoAliignCommand;
-
   private final XboxController m_joystick;
+
+  private final DrivePid m_pidDrive; 
 
   public RobotContainer() {
     m_drive = new DriveTrain();
@@ -28,12 +28,11 @@ public class RobotContainer {
 
     m_joystick = new XboxController(0);
 
-    m_autoAliignCommand = new DriveToAT(m_drive, m_camera, m_joystick);
+    m_pidDrive = new DrivePid(m_drive);
 
-    m_drive.setDefaultCommand(m_autoAliignCommand);
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    return m_pidDrive; 
   }
 }
