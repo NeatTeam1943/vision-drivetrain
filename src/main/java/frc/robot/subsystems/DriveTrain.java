@@ -83,4 +83,16 @@ public class DriveTrain extends SubsystemBase {
     m_rightFront.set(speed);
     m_rightRear.set(speed);
   }
+
+  public double getDistance() {
+    double leftAvgPos =
+        (m_leftFront.getSelectedSensorPosition() + m_leftRear.getSelectedSensorPosition()) / 2;
+    double rightAvgPos =
+        (m_rightFront.getSelectedSensorPosition() + m_rightRear.getSelectedSensorPosition()) / 2;
+    double centralAvg = (leftAvgPos + rightAvgPos) / 4;
+    double centralMotorAvg = centralAvg / DriveTrainConstants.kEncoderResolution;
+    double centralWheelAvg = centralMotorAvg / DriveTrainConstants.kMotorToWheelRatio;
+
+    return (-centralWheelAvg * DriveTrainConstants.kWheelCircumefrence) / 100;
+  }
 }
