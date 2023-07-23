@@ -76,4 +76,11 @@ public class DriveTrain extends SubsystemBase {
   public DifferentialDrive getDrive() {
     return m_drive;
   }
+
+  public void setSpeed(double speed){
+    m_leftFront.set(speed);
+    m_leftRear.set(speed);
+    m_rightFront.set(speed);
+    m_rightRear.set(speed);
+  }
 }
