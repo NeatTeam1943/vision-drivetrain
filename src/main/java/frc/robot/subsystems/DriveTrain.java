@@ -4,12 +4,26 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
 
@@ -77,22 +91,34 @@ public class DriveTrain extends SubsystemBase {
     return m_drive;
   }
 
-  public void setSpeed(double speed){
+  public void setSpeed(double speed) {
     m_leftFront.set(speed);
     m_leftRear.set(speed);
     m_rightFront.set(speed);
     m_rightRear.set(speed);
   }
 
+  public void setVoltages(double volt) {
+    m_leftFront.setVoltage(volt);
+    m_leftRear.setVoltage(volt);
+    m_rightFront.setVoltage(volt);
+    m_rightRear.setVoltage(volt);
+  }
+
   public double getDistance() {
-    double leftAvgPos =
-        (m_leftFront.getSelectedSensorPosition() + m_leftRear.getSelectedSensorPosition()) / 2;
-    double rightAvgPos =
-        (m_rightFront.getSelectedSensorPosition() + m_rightRear.getSelectedSensorPosition()) / 2;
+    double leftAvgPos = (m_leftFront.getSelectedSensorPosition() + m_leftRear.getSelectedSensorPosition()) / 2;
+    double rightAvgPos = (m_rightFront.getSelectedSensorPosition() + m_rightRear.getSelectedSensorPosition()) / 2;
     double centralAvg = (leftAvgPos + rightAvgPos) / 4;
     double centralMotorAvg = centralAvg / DriveTrainConstants.kEncoderResolution;
     double centralWheelAvg = centralMotorAvg / DriveTrainConstants.kMotorToWheelRatio;
 
     return (-centralWheelAvg * DriveTrainConstants.kWheelCircumefrence) / 100;
+  }
+
+  public void resetEncoders() {
+    m_leftFront.setSelectedSensorPosition(0);
+    m_leftRear.setSelectedSensorPosition(0);
+    m_rightFront.setSelectedSensorPosition(0);
+    m_rightRear.setSelectedSensorPosition(0);
   }
 }
