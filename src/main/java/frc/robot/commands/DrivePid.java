@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.PidConstants;
 import frc.robot.subsystems.DriveTrain;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.DriveTrain;
 public class DrivePid extends CommandBase {
   DriveTrain m_drive;
   PIDController m_controller;
+  SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 1);
 
   public DrivePid(DriveTrain drive) {
     m_drive = drive;
@@ -22,12 +24,17 @@ public class DrivePid extends CommandBase {
 
   @Override
   public void initialize() {
+    m_drive.resetEncoders();
   }
 
   @Override
   public void execute() {
-    double speed = m_controller.calculate(m_drive.getDistance(), 0.5);
-    m_drive.setSpeed(speed);
+    double speed = m_controller.calculate(m_drive.getDistance(), 2.0);
+    double voltage = m_feedforward.calculate(1, 2);
+
+    System.out.println("Speed: " + speed);
+    System.out.println("Distance: " + m_drive.getDistance());
+    m_drive.setVoltages(-speed + -voltage);
   }
 
   @Override
@@ -36,6 +43,7 @@ public class DrivePid extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    System.out.println(m_controller.atSetpoint());
     return m_controller.atSetpoint();
   }
 }
