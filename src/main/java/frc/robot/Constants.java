@@ -33,8 +33,8 @@ public final class Constants {
     }
 
     public static class PidConstants {
-        public static final double kp = 0.54187;
-        public static final double ki = 2.0;
-        public static final double kd = 0.0;
+        public static final double kp = 0.0032492;
+        public static final double ki = 0.0;
+        public static final double kd = 0.0023599;
     }
 }
