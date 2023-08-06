@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DrivePid;
 import frc.robot.subsystems.DriveTrain;
@@ -29,6 +30,10 @@ public class RobotContainer {
     m_joystick = new XboxController(0);
 
     m_pidDrive = new DrivePid(m_drive);
+
+    m_drive.resetEncoders();
+    
+    m_drive.setDefaultCommand(Commands.run(() -> m_drive.driveArcade(m_joystick), m_drive));
 
   }
 
