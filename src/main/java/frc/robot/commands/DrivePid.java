@@ -18,7 +18,7 @@ public class DrivePid extends CommandBase {
   public DrivePid(DriveTrain drive) {
     m_drive = drive;
     m_controller = new PIDController(PidConstants.kp, PidConstants.ki, PidConstants.kd);
-
+    m_controller.setTolerance(0.005);
     addRequirements(m_drive);
   }
 
@@ -29,7 +29,7 @@ public class DrivePid extends CommandBase {
 
   @Override
   public void execute() {
-    double speed = m_controller.calculate(m_drive.getDistance(), 2.0);
+    double speed = m_controller.calculate(m_drive.getDistance(), 4.0);
     double voltage = m_feedforward.calculate(1, 2);
 
     System.out.println("Speed: " + speed);
